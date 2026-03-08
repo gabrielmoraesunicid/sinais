@@ -10,6 +10,10 @@
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
 font-family: Arial;
 margin:0;
@@ -25,7 +29,7 @@ font-size:20px;
 font-weight:bold;
 }
 
-/* IMAGEM */
+/* FOTO */
 
 .topo{
 text-align:center;
@@ -36,12 +40,12 @@ padding:10px;
 width:160px;
 }
 
-/* FORMULARIO */
+/* FORMULÁRIO */
 
 .formulario{
 background:white;
 margin:10px;
-padding:18px;
+padding:16px;
 border-radius:10px;
 box-shadow:0 3px 8px rgba(0,0,0,0.1);
 }
@@ -54,7 +58,7 @@ font-weight:bold;
 
 input{
 width:100%;
-padding:13px;
+padding:12px;
 margin-top:6px;
 font-size:16px;
 border-radius:6px;
@@ -63,7 +67,8 @@ border:1px solid #ccc;
 
 .pressao{
 display:flex;
-gap:10px;
+gap:8px;
+margin-top:6px;
 }
 
 .pressao input{
@@ -72,7 +77,7 @@ flex:1;
 
 button{
 width:100%;
-padding:16px;
+padding:15px;
 margin-top:18px;
 font-size:18px;
 background:#27ae60;
@@ -80,8 +85,6 @@ color:white;
 border:none;
 border-radius:8px;
 }
-
-/* TABELA */
 
 .registros{
 margin:10px;
@@ -224,8 +227,6 @@ Registro de Sinais Vitais
 
 </div>
 
-<!-- CONFIRMAÇÃO PERSONALIZADA -->
-
 <div class="modal" id="confirmModal">
 
 <div class="modal-box">
@@ -358,4 +359,5 @@ mostrar()
 </script>
 
 </body>
+
 </html>
