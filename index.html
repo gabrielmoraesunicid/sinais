@@ -25,6 +25,19 @@ font-size:20px;
 font-weight:bold;
 }
 
+/* IMAGEM */
+
+.topo{
+text-align:center;
+padding:10px;
+}
+
+.topo img{
+width:160px;
+}
+
+/* FORMULARIO */
+
 .formulario{
 background:white;
 margin:10px;
@@ -68,6 +81,8 @@ border:none;
 border-radius:8px;
 }
 
+/* TABELA */
+
 .registros{
 margin:10px;
 overflow-x:auto;
@@ -98,6 +113,49 @@ padding:6px 10px;
 border-radius:6px;
 }
 
+/* CONFIRMAÇÃO */
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+justify-content:center;
+align-items:center;
+}
+
+.modal-box{
+background:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+width:80%;
+max-width:300px;
+}
+
+.modal-buttons{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.modal-buttons button{
+flex:1;
+padding:10px;
+font-size:16px;
+}
+
+.cancelar{
+background:#95a5a6;
+}
+
+.confirmar{
+background:#e74c3c;
+}
+
 footer{
 text-align:center;
 font-size:12px;
@@ -115,6 +173,10 @@ padding:12px;
 Registro de Sinais Vitais
 </header>
 
+<div class="topo">
+<img src="personagens.png">
+</div>
+
 <div class="formulario">
 
 <label>Frequência Cardíaca (bpm)</label>
@@ -123,18 +185,18 @@ Registro de Sinais Vitais
 <label>Pressão Arterial</label>
 
 <div class="pressao">
-<input id="pas" type="number" inputmode="numeric" placeholder="Sistólica">
-<input id="pad" type="number" inputmode="numeric" placeholder="Diastólica">
+<input id="pas" type="number" placeholder="Sistólica">
+<input id="pad" type="number" placeholder="Diastólica">
 </div>
 
 <label>Temperatura (°C)</label>
-<input id="temp" type="number" step="0.1" inputmode="decimal">
+<input id="temp" type="number" step="0.1">
 
 <label>Frequência Respiratória</label>
-<input id="fr" type="number" inputmode="numeric">
+<input id="fr" type="number">
 
 <label>Nível de Dor (0-10)</label>
-<input id="dor" type="number" min="0" max="10" inputmode="numeric">
+<input id="dor" type="number" min="0" max="10">
 
 <button onclick="salvar()">Salvar Registro</button>
 
@@ -162,6 +224,26 @@ Registro de Sinais Vitais
 
 </div>
 
+<!-- CONFIRMAÇÃO PERSONALIZADA -->
+
+<div class="modal" id="confirmModal">
+
+<div class="modal-box">
+
+<p>Deseja realmente excluir este registro?</p>
+
+<div class="modal-buttons">
+
+<button class="cancelar" onclick="fecharModal()">Cancelar</button>
+
+<button class="confirmar" onclick="confirmarExclusao()">Excluir</button>
+
+</div>
+
+</div>
+
+</div>
+
 <footer>
 Sistema simples de registro clínico
 </footer>
@@ -170,12 +252,15 @@ Sistema simples de registro clínico
 
 let registros = JSON.parse(localStorage.getItem("registrosVitais")) || []
 
+let indiceParaExcluir = null
+
 function mostrar(){
 
 const tabela = document.getElementById("lista")
+
 tabela.innerHTML=""
 
-registros.forEach((r,index) => {
+registros.forEach((r,index)=>{
 
 let linha = `
 <tr>
@@ -186,7 +271,7 @@ let linha = `
 <td>${r.fr}</td>
 <td>${r.dor}</td>
 <td>
-<button class="excluir" onclick="excluir(${index})">🗑</button>
+<button class="excluir" onclick="abrirModal(${index})">🗑</button>
 </td>
 </tr>
 `
@@ -213,17 +298,17 @@ return
 
 let registro = {
 
-data: new Date().toLocaleString(),
+data:new Date().toLocaleString(),
 
-fc: fc,
+fc:fc,
 
-pa: pas + "/" + pad,
+pa:pas + "/" + pad,
 
-temp: temp,
+temp:temp,
 
-fr: fr,
+fr:fr,
 
-dor: dor
+dor:dor
 
 }
 
@@ -242,17 +327,29 @@ mostrar()
 
 }
 
-function excluir(index){
+function abrirModal(index){
 
-if(confirm("Deseja apagar este registro?")){
+indiceParaExcluir = index
 
-registros.splice(index,1)
+document.getElementById("confirmModal").style.display="flex"
+
+}
+
+function fecharModal(){
+
+document.getElementById("confirmModal").style.display="none"
+
+}
+
+function confirmarExclusao(){
+
+registros.splice(indiceParaExcluir,1)
 
 localStorage.setItem("registrosVitais", JSON.stringify(registros))
 
-mostrar()
+fecharModal()
 
-}
+mostrar()
 
 }
 
@@ -261,5 +358,4 @@ mostrar()
 </script>
 
 </body>
-
 </html>
